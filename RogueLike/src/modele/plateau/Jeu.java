@@ -59,12 +59,21 @@ public class Jeu extends Observable implements Runnable {
         addEntiteStatique(new Mur(this), 2, 6);
         addEntiteStatique(new Mur(this), 3, 6);
 
+        //Ajout des deux portes de la salle
+
+        addEntiteStatique(new Porte(this), 0, this.aleatoirY());
+
+        addEntiteStatique(new PorteNonTraverssable(this), this.SIZE_X-1, this.aleatoirY());
+
+
+
+
+
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if (grilleEntitesStatiques[x][y] == null) {
                     grilleEntitesStatiques[x][y] = new CaseNormale(this);
                 }
-
             }
         }
 
@@ -96,6 +105,20 @@ public class Jeu extends Observable implements Runnable {
     private void addEntiteStatique(EntiteStatique e, int x, int y) {
         grilleEntitesStatiques[x][y] = e;
 
+    }
+
+    //ajout fontion aleatoire
+    private int aleatoirY()
+    {
+         int max =SIZE_Y-2;
+         int min =2;
+         int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
+         return random_int;
+    }
+
+    public void relancer()
+    {
+        initialisationDesEntites();
     }
 
 }

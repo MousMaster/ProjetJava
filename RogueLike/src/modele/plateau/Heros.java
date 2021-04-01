@@ -12,6 +12,9 @@ public class Heros {
     private int x;
     private int y;
 
+    //ajout du compteur des clés
+    private int compteurCle;
+
     private Jeu jeu;
 
     public int getX() {
@@ -21,6 +24,13 @@ public class Heros {
     public int getY() {
         return y;
     }
+
+    //ajou des setters et getters de de clé + fonction decremente nombre de clés
+    public int getNombreCle(){ return compteurCle;}
+
+    public void setNombreCle(int nbCle){ this.compteurCle=nbCle;}
+
+    public void decNombreCle(){ this.compteurCle--;}
 
     public Heros(Jeu _jeu, int _x, int _y) {
         jeu = _jeu;

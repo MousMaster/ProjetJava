@@ -33,6 +33,9 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoCaseNormale;
     private ImageIcon icoMur;
     private ImageIcon icoColonne;
+    private ImageIcon icoPorte;
+    private ImageIcon icoPorteNonTraverssable;
+
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
@@ -56,6 +59,7 @@ public class VueControleur extends JFrame implements Observer {
                     case KeyEvent.VK_RIGHT : jeu.getHeros().droite();break;
                     case KeyEvent.VK_DOWN : jeu.getHeros().bas(); break;
                     case KeyEvent.VK_UP : jeu.getHeros().haut(); break;
+                    case KeyEvent.VK_R:  jeu.relancer(); break;
 
                 }
             }
@@ -67,6 +71,9 @@ public class VueControleur extends JFrame implements Observer {
         icoHero = chargerIcone("Images/Pacman.png");
         icoCaseNormale = chargerIcone("Images/Vide.png");
         icoMur = chargerIcone("Images/Mur.png");
+        icoPorte =chargerIcone("Images/porteFerme.png");
+        icoPorteNonTraverssable =chargerIcone("Images/porteFerme.png");
+
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -112,8 +119,17 @@ public class VueControleur extends JFrame implements Observer {
 				EntiteStatique e = jeu.getEntite(x, y);
                 if (e instanceof Mur) {
                     tabJLabel[x][y].setIcon(icoMur);
-                } else if (e instanceof CaseNormale) {
+                } else if (e instanceof CaseNormale)
+                {
                     tabJLabel[x][y].setIcon(icoCaseNormale);
+                }
+                else if (e instanceof Porte)
+                {
+                    tabJLabel[x][y].setIcon(icoPorte);
+                }
+                else if (e instanceof PorteNonTraverssable)
+                {
+                    tabJLabel[x][y].setIcon(icoPorteNonTraverssable);
                 }
             }
         }
