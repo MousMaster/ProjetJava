@@ -12,6 +12,38 @@ public class Heros {
     private int x;
     private int y;
 
+    int orientation;
+
+    void setOrientationN()
+    {
+        this.orientation=1;
+    }
+    void setOrientationS()
+    {
+        this.orientation=2;
+    }
+    void setOrientationE()
+    {
+        this.orientation=3;
+    }
+    void setOrientationO()
+    {
+        this.orientation=4;
+    }
+
+    public String getOrientation() {
+        if (orientation == 1) {
+            return "Nord";
+        }else
+        if (orientation == 2) {
+            return "Sud";
+        }else
+        if (orientation == 3) {
+            return "Est";
+        }else {
+            return "Ouest";
+        }
+    }
 
 
 
@@ -38,12 +70,14 @@ public class Heros {
         x = _x;
         y = _y;
         inventaire=new Inventaire();
+        orientation=3;
     }
 
     public void droite() {
         if (traversable(x+1, y)) {
             x ++;
             this.affichePos();
+            this.setOrientationE();
         }
     }
 
@@ -51,6 +85,7 @@ public class Heros {
         if (traversable(x-1, y)) {
             x --;
             this.affichePos();
+            this.setOrientationO();
         }
     }
 
@@ -58,6 +93,7 @@ public class Heros {
         if (traversable(x, y+1)) {
             y ++;
             this.affichePos();
+            this.setOrientationS();
         }
     }
 
@@ -65,6 +101,7 @@ public class Heros {
         if (traversable(x, y-1)) {
             y --;
             this.affichePos();
+            this.setOrientationN();
         }
     }
 
@@ -79,7 +116,7 @@ public class Heros {
 
     public void affichePos()
     {
-        System.out.println("PosX: "+this.getY()+" PosY :"+this.getY() );
+        System.out.println("PosX: "+this.getY()+" PosY :"+this.getY()+this.getOrientation() );
     }
 
 

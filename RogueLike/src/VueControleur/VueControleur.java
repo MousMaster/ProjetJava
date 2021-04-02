@@ -29,7 +29,10 @@ public class VueControleur extends JFrame implements Observer {
     private int sizeY;
 
     // icones affichées dans la grille
-    private ImageIcon icoHero;
+    private ImageIcon icoHeroE;
+    private ImageIcon icoHeroN;
+    private ImageIcon icoHeroS;
+    private ImageIcon icoHeroO;
     private ImageIcon icoCaseNormale;
     private ImageIcon icoMur;
     private ImageIcon icoColonne;
@@ -61,7 +64,10 @@ public class VueControleur extends JFrame implements Observer {
                     {
                         jeu.getHeros().gauche();
                     } break;
-                    case KeyEvent.VK_RIGHT : jeu.getHeros().droite();break;
+                    case KeyEvent.VK_RIGHT :
+                    {
+                        jeu.getHeros().droite();
+                    }break;
                     case KeyEvent.VK_DOWN : jeu.getHeros().bas(); break;
                     case KeyEvent.VK_UP : jeu.getHeros().haut(); break;
                     case KeyEvent.VK_R:  jeu.relancer(); break;
@@ -98,7 +104,12 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        icoHero = chargerIcone("Images/Pacman.png");
+        icoHeroE = chargerIcone("Images/PacmanE.png");
+        icoHeroN = chargerIcone("Images/PacmanN.png");
+        icoHeroS = chargerIcone("Images/PacmanS.png");
+        icoHeroO = chargerIcone("Images/PacmanO.png");
+
+
         icoCaseNormale = chargerIcone("Images/Vide.png");
         icoMur = chargerIcone("Images/Mur.png");
         icoPorte =chargerIcone("Images/porteOuverte.png");
@@ -170,7 +181,24 @@ public class VueControleur extends JFrame implements Observer {
 
 
 
-        tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHero);
+        if(jeu.getHeros().getOrientation()=="Est")
+        {
+            tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroE);
+        }
+        if(jeu.getHeros().getOrientation()=="Nord")
+        {
+            tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroN);
+        }
+        if(jeu.getHeros().getOrientation()=="Ouest")
+        {
+            tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroO);
+        }
+        if(jeu.getHeros().getOrientation()=="Sud")
+        {
+            tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroS);
+        }
+
+
         if(!jeu.getTresor().isOuvert())
         {
             tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
