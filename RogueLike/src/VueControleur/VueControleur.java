@@ -35,6 +35,8 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoColonne;
     private ImageIcon icoPorte;
     private ImageIcon icoPorteNonTraverssable;
+    private ImageIcon icoTresor;
+    private ImageIcon icoCle;
 
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
@@ -55,11 +57,39 @@ public class VueControleur extends JFrame implements Observer {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch(e.getKeyCode()) {  // on regarde quelle touche a été pressée
-                    case KeyEvent.VK_LEFT : jeu.getHeros().gauche(); break;
+                    case KeyEvent.VK_LEFT :
+                    {
+                        jeu.getHeros().gauche();
+                    } break;
                     case KeyEvent.VK_RIGHT : jeu.getHeros().droite();break;
                     case KeyEvent.VK_DOWN : jeu.getHeros().bas(); break;
                     case KeyEvent.VK_UP : jeu.getHeros().haut(); break;
                     case KeyEvent.VK_R:  jeu.relancer(); break;
+                    case KeyEvent.VK_O:  jeu.ouvrePorte(); break;
+                    case KeyEvent.VK_T:
+                    {
+                       if(jeu.getTresor()!=null)
+                       {
+                           if(!jeu.getTresor().vide())
+                           {
+                               if( jeu.getTresor().getTresor() instanceof Cle)
+                               {
+
+                                   jeu.visualiserTresor();
+                               }
+                           }
+                       }
+
+
+                    } break;
+
+                    case KeyEvent.VK_C:
+                    {
+                        if(!jeu.getTresor().vide())
+                        jeu.recupererContenuTresor();
+                        tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoCle);
+                    }break;
+
 
                 }
             }
@@ -73,6 +103,8 @@ public class VueControleur extends JFrame implements Observer {
         icoMur = chargerIcone("Images/Mur.png");
         icoPorte =chargerIcone("Images/porteOuverte.png");
         icoPorteNonTraverssable =chargerIcone("Images/porteFerme.png");
+        icoTresor =chargerIcone("Images/tresor.png");
+        icoCle =chargerIcone("Images/clee.png");
 
     }
 
@@ -91,7 +123,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Roguelike");
-        setSize(1000, 2500);
+        setSize(500, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -106,6 +138,7 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
         add(grilleJLabels);
+
     }
 
     
@@ -119,6 +152,7 @@ public class VueControleur extends JFrame implements Observer {
 				EntiteStatique e = jeu.getEntite(x, y);
                 if (e instanceof Mur) {
                     tabJLabel[x][y].setIcon(icoMur);
+
                 } else if (e instanceof CaseNormale)
                 {
                     tabJLabel[x][y].setIcon(icoCaseNormale);
@@ -137,14 +171,20 @@ public class VueControleur extends JFrame implements Observer {
 
 
         tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHero);
-        jeu.ouvrePorte();
+        if(!jeu.getTresor().isOuvert())
+        {
+            tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
+        }
 
     }
 
     @Override
     public void update(Observable o, Object arg) {
 
+
         mettreAJourAffichage();
+
+
         /*
         SwingUtilities.invokeLater(new Runnable() {
                     @Override

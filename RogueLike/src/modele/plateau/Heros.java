@@ -12,10 +12,12 @@ public class Heros {
     private int x;
     private int y;
 
-    //ajout du compteur des clés
-    private int compteurCle;
+
+
 
     private Jeu jeu;
+
+    private Inventaire inventaire;
 
     public int getX() {
         return x;
@@ -25,40 +27,44 @@ public class Heros {
         return y;
     }
 
-    //ajou des setters et getters de de clé + fonction decremente
-    public int getNombreCle(){ return compteurCle;}
+    public Inventaire getInventaire(){return inventaire;}
 
-    public void setNombreCle(int nbCle){ this.compteurCle=nbCle;}
 
-    public void decNombreCle(){ this.compteurCle--;}
+
+
 
     public Heros(Jeu _jeu, int _x, int _y) {
         jeu = _jeu;
         x = _x;
         y = _y;
+        inventaire=new Inventaire();
     }
 
     public void droite() {
         if (traversable(x+1, y)) {
             x ++;
+            this.affichePos();
         }
     }
 
     public void gauche() {
         if (traversable(x-1, y)) {
             x --;
+            this.affichePos();
         }
     }
 
     public void bas() {
         if (traversable(x, y+1)) {
             y ++;
+            this.affichePos();
         }
     }
 
     public void haut() {
         if (traversable(x, y-1)) {
             y --;
+            this.affichePos();
         }
     }
 
@@ -70,4 +76,11 @@ public class Heros {
             return false;
         }
     }
+
+    public void affichePos()
+    {
+        System.out.println("PosX: "+this.getY()+" PosY :"+this.getY() );
+    }
+
+
 }

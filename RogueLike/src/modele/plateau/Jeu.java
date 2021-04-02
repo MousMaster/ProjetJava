@@ -5,6 +5,9 @@
  */
 package modele.plateau;
 
+import Tools.Aleatoire;
+import Tools.Voisinage;
+
 import java.util.Observable;
 
 
@@ -13,10 +16,17 @@ public class Jeu extends Observable implements Runnable {
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 10;
 
+
+
     private int pause = 200; // période de rafraichissement
 
     private Heros heros;
+    private Tresor monTresor;
 
+    public Tresor getTresor()
+    {
+        return monTresor;
+    }
     private EntiteStatique[][] grilleEntitesStatiques = new EntiteStatique[SIZE_X][SIZE_Y];
 
     public Jeu() {
@@ -41,7 +51,7 @@ public class Jeu extends Observable implements Runnable {
 
     private void initialisationDesEntites() {
         heros = new Heros(this, 4, 4);
-        heros.setNombreCle(1);
+        heros.getInventaire().setNombreCle(1);
 
 
         addEntiteStatique(new Mur(this), 2, 6);
@@ -53,6 +63,15 @@ public class Jeu extends Observable implements Runnable {
 
         addEntiteStatique(new PorteVerouille(this), 6, 6);
         addEntiteStatique(new PorteVerouille(this), 3, 8);
+
+
+        Aleatoire alea=new Aleatoire(1,SIZE_Y);
+        addEntiteStatique(new PorteVerouille(this),0,alea.genereNombre());
+
+        addEntiteStatique(new PorteVerouille(this),SIZE_X-1,alea.genereNombre());
+
+
+
 
 
         // murs extérieurs verticaux
@@ -82,14 +101,6 @@ public class Jeu extends Observable implements Runnable {
             }
         }
 
-
-
-
-
-
-
-
-
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if (grilleEntitesStatiques[x][y] == null) {
@@ -97,6 +108,10 @@ public class Jeu extends Observable implements Runnable {
                 }
             }
         }
+
+        initTresor();
+        //affichage inventaire jours
+        heros.getInventaire().afficheInventaire();
 
 
     }
@@ -140,16 +155,12 @@ public class Jeu extends Observable implements Runnable {
     }
 
     //ajout fontion aleatoire
-    private int aleatoirY()
-    {
-         int max =SIZE_Y-2;
-         int min =2;
-         int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
-         return random_int;
-    }
+
 
     public void relancer()
     {
+        System.lineSeparator();
+        System.out.println("Initialisation du jeu");
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 grilleEntitesStatiques[x][y] =null;
@@ -159,45 +170,43 @@ public class Jeu extends Observable implements Runnable {
         this.initialisationDesEntites();
     }
 
-    public int indiceGlobal(int posY,int posX)
-    {
-        return (posX*SIZE_Y+posY);
-    }
-
-    //test voisinage
-    public boolean voisin(Heros joueur,EntiteStatique porte)
-    {
-        if(porte instanceof PorteVerouille)
-        {
-            PorteVerouille nouvPorte = (PorteVerouille) porte;
-            if(indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) + 1 == indiceGlobal(joueur.getX(),joueur.getY())
-                    || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) -1 == indiceGlobal(joueur.getX(),joueur.getY())
-                        || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) + SIZE_Y == indiceGlobal(joueur.getX(),joueur.getY())
-                    || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) - SIZE_Y == indiceGlobal(joueur.getX(),joueur.getY())
-                    )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
 
     public void ouvrePorte() {
+        Voisinage voisin =new Voisinage(SIZE_Y);
+
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
-                if(grilleEntitesStatiques[x][y] instanceof PorteVerouille)
-                {
-                    if(voisin(heros,grilleEntitesStatiques[x][y]) && heros.getNombreCle()>0)
-                    {
-                            heros.decNombreCle();
-                            grilleEntitesStatiques[x][y]=null;
-                            addEntiteStatique(new Porte(this), x, y);
+                if (grilleEntitesStatiques[x][y] instanceof PorteVerouille) {
+                    if (voisin.voisinJouerPorte(heros, grilleEntitesStatiques[x][y]) && heros.getInventaire().getNombreCle() > 0) {
+                        System.lineSeparator();
+                        System.out.println("Ouverture porte");
+                        heros.getInventaire().decNombreCle();
+                        heros.getInventaire().afficheInventaire();
+                        grilleEntitesStatiques[x][y] = null;
+                        addEntiteStatique(new Porte(this), x, y);
                     }
                 }
             }
         }
     }
 
+    public void initTresor()
+    {
+        monTresor=new Tresor();
+        monTresor.setOuvert(false);
+        monTresor.setPoX(5);
+        monTresor.setPoY(5);
+        Cle c=new Cle();
+        c.setNombreCle(3);
+        monTresor.add(c);
+    }
+
+    public void visualiserTresor() {
+        if(monTresor!=null)
+        monTresor.Visionner();
+    }
+    public void recupererContenuTresor() {
+        monTresor.recupererContenuTresor(heros);
+    }
 }
