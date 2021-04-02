@@ -1,9 +1,6 @@
 package Tools;
 
-import modele.plateau.EntiteStatique;
-import modele.plateau.Heros;
-import modele.plateau.PorteVerouille;
-import modele.plateau.Tresor;
+import modele.plateau.*;
 
 public class Voisinage {
     private int largeur;
@@ -49,5 +46,10 @@ public class Voisinage {
 
     public boolean voisinTresorJoueur(Tresor tresor, Heros joueur) {
       return   testVoinsin(tresor.getPosX(), tresor.getPosY(), joueur.getX(), joueur.getY());
+    }
+
+    public boolean estPasseSurDalle(DalleUnique dalle,Heros jouer)
+    {
+        return (dalle.getPosX() == jouer.getX() && dalle.getPosY() == jouer.getY());
     }
 }

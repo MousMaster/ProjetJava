@@ -76,7 +76,9 @@ public class Heros {
     public void droite() {
         if (traversable(x+1, y)) {
             x ++;
+            /*
             this.affichePos();
+             */
             this.setOrientationE();
         }
     }
@@ -84,24 +86,37 @@ public class Heros {
     public void gauche() {
         if (traversable(x-1, y)) {
             x --;
+            /*
             this.affichePos();
+
+             */
             this.setOrientationO();
+
+
         }
     }
 
     public void bas() {
         if (traversable(x, y+1)) {
             y ++;
+            /*
             this.affichePos();
+             */
             this.setOrientationS();
+
+
         }
     }
 
     public void haut() {
         if (traversable(x, y-1)) {
             y --;
+            /*
             this.affichePos();
+             */
             this.setOrientationN();
+
+
         }
     }
 
@@ -116,7 +131,7 @@ public class Heros {
 
     public void affichePos()
     {
-        System.out.println("PosX: "+this.getY()+" PosY :"+this.getY()+this.getOrientation() );
+        System.out.println("PosX: "+this.getX()+" PosY :"+this.getY()+this.getOrientation() );
     }
 
 

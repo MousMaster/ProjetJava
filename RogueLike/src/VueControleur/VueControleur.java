@@ -41,6 +41,8 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoTresor;
     private ImageIcon icoCle;
 
+    private ImageIcon icoDalle;
+
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
@@ -117,6 +119,8 @@ public class VueControleur extends JFrame implements Observer {
         icoTresor =chargerIcone("Images/tresor.png");
         icoCle =chargerIcone("Images/clee.png");
 
+        icoDalle = chargerIcone("Images/dalleUnique.png");
+
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -176,10 +180,26 @@ public class VueControleur extends JFrame implements Observer {
                 {
                     tabJLabel[x][y].setIcon(icoPorteNonTraverssable);
                 }
+                else if (e instanceof DalleUnique)
+                {
+                    tabJLabel[x][y].setIcon(icoDalle);
+                }
             }
         }
 
 
+/*
+        for(int i=0;i<jeu.getNombreDalle();i++)
+        {
+            //if(jeu.getMesDalles().accees(i))
+            //{
+                System.out.println("Non nul");
+                tabJLabel[jeu.getMesDalles().accees(i).getPosX()][jeu.getMesDalles().accees(i).getPosY()].setIcon(icoDalle);
+            //}
+        }
+
+ */
+        //Affichage du joueur selon son orientation
 
         if(jeu.getHeros().getOrientation()=="Est")
         {
@@ -197,20 +217,23 @@ public class VueControleur extends JFrame implements Observer {
         {
             tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroS);
         }
-
-
         if(!jeu.getTresor().isOuvert())
         {
             tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
         }
+
+
+        tabJLabel[jeu.getMaDalle().getPosX()][jeu.getMaDalle().getPosY()].setIcon(icoDalle);
+
 
     }
 
     @Override
     public void update(Observable o, Object arg) {
 
-
+        jeu.verifieDall();
         mettreAJourAffichage();
+
 
 
         /*

@@ -9,6 +9,7 @@ import Tools.Aleatoire;
 import Tools.Voisinage;
 
 import java.util.Observable;
+import java.util.Vector;
 
 
 public class Jeu extends Observable implements Runnable {
@@ -16,7 +17,26 @@ public class Jeu extends Observable implements Runnable {
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 10;
 
+    private MesDalles mesDalles;
+    private int nombreDalle;
 
+    private DalleUnique maDalle;
+
+    public MesDalles getMesDalles() {
+        return mesDalles;
+    }
+
+    public MesDalles accesDalles() {
+        return mesDalles;
+    }
+
+    public int getNombreDalle() {
+        return this.mesDalles.getNomBreDalle();
+    }
+
+    public void setNombreDalle(int nombreDalle) {
+        this.nombreDalle = nombreDalle;
+    }
 
     private int pause = 200; // période de rafraichissement
 
@@ -49,13 +69,17 @@ public class Jeu extends Observable implements Runnable {
 		return grilleEntitesStatiques[x][y];
 	}
 
+    public DalleUnique getMaDalle() {
+        return maDalle;
+    }
+
     private void initialisationDesEntites() {
+
         heros = new Heros(this, 4, 4);
         heros.getInventaire().setNombreCle(1);
 
 
-        addEntiteStatique(new Mur(this), 2, 6);
-        addEntiteStatique(new Mur(this), 3, 6);
+
 
         addEntiteStatique(new Porte(this), 6, 6);
 
@@ -71,6 +95,9 @@ public class Jeu extends Observable implements Runnable {
         addEntiteStatique(new PorteVerouille(this),SIZE_X-1,alea.genereNombre());
 
 
+
+
+        maDalle =new DalleUnique(this,3,7);
 
 
 
@@ -112,6 +139,7 @@ public class Jeu extends Observable implements Runnable {
         initTresor();
         //affichage inventaire jours
         heros.getInventaire().afficheInventaire();
+        afficherCordonneDalle();
 
 
     }
@@ -142,14 +170,18 @@ public class Jeu extends Observable implements Runnable {
         grilleEntitesStatiques[x][y] = e;
 
         if (e instanceof PorteVerouille) {
-            PorteVerouille nouV = (PorteVerouille) e;
             ((PorteVerouille) e).setPosX(x);
             ((PorteVerouille) e).setPosY(y);
         } else {
             if (e instanceof Porte) {
-                Porte nouv = (Porte) e;
                 ((Porte) e).setPosX(x);
                 ((Porte) e).setPosY(y);
+            } else {
+                if(e instanceof DalleUnique)
+                {
+                    ((DalleUnique) e).setPosX(x);
+                    ((DalleUnique) e).setPosY(y);
+                }
             }
         }
     }
@@ -209,4 +241,48 @@ public class Jeu extends Observable implements Runnable {
     public void recupererContenuTresor() {
         monTresor.recupererContenuTresor(heros);
     }
+
+    public void verifieDall()
+    {
+        for(int i=0;i<SIZE_X;i++)
+        {
+            for(int j=0;j<SIZE_Y;j++)
+            {
+                if(grilleEntitesStatiques[i][j] instanceof DalleUnique)
+                {
+                    ((DalleUnique) grilleEntitesStatiques[i][j]).gestionDall(heros);
+                }
+
+            }
+        }
+    }
+
+    public void afficherCordonneDalle()
+    {
+        for(int i=0;i<SIZE_X;i++)
+        {
+            for(int j=0;j<SIZE_Y;j++)
+            {
+                /*
+                //if(grilleEntitesStatiques[i][j] instanceof DalleUnique)
+                for(int k=0;i<nombreDalle;k++)
+                {
+                    if((this.mesDalles.accees(i)) instanceof DalleUnique))
+                    {
+                        System.out.println("Coordonne dalleUnique :"+((DalleUnique) grilleEntitesStatiques[i][j]).posX +" "
+                                +((DalleUnique) grilleEntitesStatiques[i][j]).posY);
+                    }
+
+                }
+
+                 */
+
+            }
+        }
+    }
+
+
+
+
+
 }
