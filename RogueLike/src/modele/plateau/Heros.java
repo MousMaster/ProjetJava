@@ -25,7 +25,7 @@ public class Heros {
         return y;
     }
 
-    //ajou des setters et getters de de clé + fonction decremente nombre de clés
+    //ajou des setters et getters de de clé + fonction decremente
     public int getNombreCle(){ return compteurCle;}
 
     public void setNombreCle(int nbCle){ this.compteurCle=nbCle;}
@@ -64,7 +64,7 @@ public class Heros {
 
     private boolean traversable(int x, int y) {
 
-        if (x >0 && x < jeu.SIZE_X && y > 0 && y < jeu.SIZE_Y) {
+        if (x >=0 && x <= jeu.SIZE_X && y > 0 && y < jeu.SIZE_Y) {
             return jeu.getEntite(x, y).traversable();
         } else {
             return false;

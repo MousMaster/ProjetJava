@@ -71,7 +71,7 @@ public class VueControleur extends JFrame implements Observer {
         icoHero = chargerIcone("Images/Pacman.png");
         icoCaseNormale = chargerIcone("Images/Vide.png");
         icoMur = chargerIcone("Images/Mur.png");
-        icoPorte =chargerIcone("Images/porteFerme.png");
+        icoPorte =chargerIcone("Images/porteOuverte.png");
         icoPorteNonTraverssable =chargerIcone("Images/porteFerme.png");
 
     }
@@ -91,7 +91,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Roguelike");
-        setSize(400, 250);
+        setSize(1000, 2500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -127,7 +127,7 @@ public class VueControleur extends JFrame implements Observer {
                 {
                     tabJLabel[x][y].setIcon(icoPorte);
                 }
-                else if (e instanceof PorteNonTraverssable)
+                else if (e instanceof PorteVerouille)
                 {
                     tabJLabel[x][y].setIcon(icoPorteNonTraverssable);
                 }
@@ -137,11 +137,13 @@ public class VueControleur extends JFrame implements Observer {
 
 
         tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHero);
+        jeu.ouvrePorte();
 
     }
 
     @Override
     public void update(Observable o, Object arg) {
+
         mettreAJourAffichage();
         /*
         SwingUtilities.invokeLater(new Runnable() {

@@ -1,6 +1,6 @@
 package modele.plateau;
 
-public class Porte extends EntiteStatique{
+public class PorteVerouille extends EntiteStatique{
     private int posX,posY;
 
     public int getPosX() {
@@ -18,9 +18,16 @@ public class Porte extends EntiteStatique{
     public void setPosY(int posY) {
         this.posY = posY;
     }
-    public Porte(Jeu _jeu) { super(_jeu); }
+
+    public PorteVerouille(Jeu _jeu) { super(_jeu); }
+
+    public PorteVerouille(Jeu _jeu,int posX,int posY)
+    {
+        super(_jeu);
+        this.posX=posX; this.posY=posY;
+    }
     @Override
     public boolean traversable() {
-        return true;
+        return false;
     }
 }

@@ -41,29 +41,50 @@ public class Jeu extends Observable implements Runnable {
 
     private void initialisationDesEntites() {
         heros = new Heros(this, 4, 4);
+        heros.setNombreCle(1);
 
-
-
-        // murs extérieurs horizontaux
-        for (int x = 0; x < 20; x++) {
-            addEntiteStatique(new Mur(this), x, 0);
-            addEntiteStatique(new Mur(this), x, 9);
-        }
-
-        // murs extérieurs verticaux
-        for (int y = 1; y < 9; y++) {
-            addEntiteStatique(new Mur(this), 0, y);
-            addEntiteStatique(new Mur(this), 19, y);
-        }
 
         addEntiteStatique(new Mur(this), 2, 6);
         addEntiteStatique(new Mur(this), 3, 6);
 
+        addEntiteStatique(new Porte(this), 6, 6);
+
         //Ajout des deux portes de la salle
 
-        addEntiteStatique(new Porte(this), 0, this.aleatoirY());
+        addEntiteStatique(new PorteVerouille(this), 6, 6);
+        addEntiteStatique(new PorteVerouille(this), 3, 8);
 
-        addEntiteStatique(new PorteNonTraverssable(this), this.SIZE_X-1, this.aleatoirY());
+
+        // murs extérieurs verticaux
+        for (int y = 1; y < 9; y++) {
+            if(this.getEntite(0,y)==null)
+            {
+                addEntiteStatique(new Mur(this), 0, y);
+            }
+
+            if(this.getEntite(19,y)==null) {
+                addEntiteStatique(new Mur(this), 19, y);
+            }
+        }
+
+        // murs extérieurs horizontaux
+        for (int x = 0; x < 20; x++) {
+            if(this.getEntite(x,0)==null)
+            {
+                addEntiteStatique(new Mur(this), x, 0);
+
+            }
+
+            if(this.getEntite(x,9)==null)
+            {
+                addEntiteStatique(new Mur(this), x, 9);
+
+            }
+        }
+
+
+
+
 
 
 
@@ -105,6 +126,17 @@ public class Jeu extends Observable implements Runnable {
     private void addEntiteStatique(EntiteStatique e, int x, int y) {
         grilleEntitesStatiques[x][y] = e;
 
+        if (e instanceof PorteVerouille) {
+            PorteVerouille nouV = (PorteVerouille) e;
+            ((PorteVerouille) e).setPosX(x);
+            ((PorteVerouille) e).setPosY(y);
+        } else {
+            if (e instanceof Porte) {
+                Porte nouv = (Porte) e;
+                ((Porte) e).setPosX(x);
+                ((Porte) e).setPosY(y);
+            }
+        }
     }
 
     //ajout fontion aleatoire
@@ -118,7 +150,54 @@ public class Jeu extends Observable implements Runnable {
 
     public void relancer()
     {
-        initialisationDesEntites();
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                grilleEntitesStatiques[x][y] =null;
+            }
+        }
+
+        this.initialisationDesEntites();
+    }
+
+    public int indiceGlobal(int posY,int posX)
+    {
+        return (posX*SIZE_Y+posY);
+    }
+
+    //test voisinage
+    public boolean voisin(Heros joueur,EntiteStatique porte)
+    {
+        if(porte instanceof PorteVerouille)
+        {
+            PorteVerouille nouvPorte = (PorteVerouille) porte;
+            if(indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) + 1 == indiceGlobal(joueur.getX(),joueur.getY())
+                    || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) -1 == indiceGlobal(joueur.getX(),joueur.getY())
+                        || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) + SIZE_Y == indiceGlobal(joueur.getX(),joueur.getY())
+                    || indiceGlobal(nouvPorte.getPosX(),nouvPorte.getPosY()) - SIZE_Y == indiceGlobal(joueur.getX(),joueur.getY())
+                    )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    public void ouvrePorte() {
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                if(grilleEntitesStatiques[x][y] instanceof PorteVerouille)
+                {
+                    if(voisin(heros,grilleEntitesStatiques[x][y]) && heros.getNombreCle()>0)
+                    {
+                            heros.decNombreCle();
+                            grilleEntitesStatiques[x][y]=null;
+                            addEntiteStatique(new Porte(this), x, y);
+                    }
+                }
+            }
+        }
     }
 
 }
