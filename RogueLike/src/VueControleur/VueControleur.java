@@ -64,6 +64,8 @@ public class VueControleur extends JFrame implements Observer {
         addKeyListener(new KeyAdapter() { // new KeyAdapter() { ... } est une instance de classe anonyme, il s'agit d'un objet qui correspond au controleur dans MVC
             @Override
             public void keyPressed(KeyEvent e) {
+               // jeu.getHeros().affichePos();
+                jeu.commentJouer();
                 switch(e.getKeyCode()) {  // on regarde quelle touche a été pressée
                     case KeyEvent.VK_LEFT :
                     {
@@ -76,7 +78,9 @@ public class VueControleur extends JFrame implements Observer {
                     case KeyEvent.VK_DOWN : jeu.getHeros().bas(); break;
                     case KeyEvent.VK_UP : jeu.getHeros().haut(); break;
                     case KeyEvent.VK_R:  jeu.relancer(); break;
+                    case KeyEvent.VK_I:  jeu.getHeros().getInventaire().afficheInventaire(); break;
                     case KeyEvent.VK_O:  jeu.ouvrePorte(); break;
+                    case KeyEvent.VK_H : jeu.help(); break;
                     case KeyEvent.VK_T:
                     {
                        if(jeu.getTresor()!=null)
@@ -135,7 +139,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Roguelike");
-        setSize(500, 250);
+        setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -242,6 +246,7 @@ public class VueControleur extends JFrame implements Observer {
     public void update(Observable o, Object arg) {
 
         jeu.verifieDall();
+
         mettreAJourAffichage();
 
 

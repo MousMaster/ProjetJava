@@ -77,7 +77,7 @@ public class Heros {
         if (traversable(x+1, y)) {
             x ++;
 
-            this.affichePos();
+          //  this.affichePos();
 
             this.setOrientationE();
         }
@@ -87,7 +87,7 @@ public class Heros {
         if (traversable(x-1, y)) {
             x --;
 
-            this.affichePos();
+          //  this.affichePos();
 
 
             this.setOrientationO();
@@ -100,7 +100,7 @@ public class Heros {
         if (traversable(x, y+1)) {
             y ++;
 
-            this.affichePos();
+         //   this.affichePos();
 
             this.setOrientationS();
 
@@ -112,7 +112,7 @@ public class Heros {
         if (traversable(x, y-1)) {
             y --;
 
-            this.affichePos();
+         //   this.affichePos();
 
             this.setOrientationN();
 

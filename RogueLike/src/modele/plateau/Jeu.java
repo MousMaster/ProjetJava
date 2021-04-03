@@ -14,8 +14,14 @@ import java.util.Vector;
 
 public class Jeu extends Observable implements Runnable {
 
-    public static final int SIZE_X = 20;
+    public static final int SIZE_X = 50;
     public static final int SIZE_Y = 10;
+    public static final int SIZE_X_S = 10;
+    public static final int SIZE_Y_S = 5;
+    private EntiteStatique[][] grilleEntitesStatiques = new EntiteStatique[SIZE_X][SIZE_Y];
+
+    private boolean aideVu =false;
+
 
     private int pause = 200; // période de rafraichissement
 
@@ -34,24 +40,18 @@ public class Jeu extends Observable implements Runnable {
         return mesDalles;
     }
 
-    public MesDalles accesDalles() {
-        return mesDalles;
-    }
 
     public int getNombreDalle() {
         return this.mesDalles.getNomBreDalle();
     }
 
-    public void setNombreDalle(int nombreDalle) {
-        this.nombreDalle = nombreDalle;
-    }
+
 
 
     public Tresor getTresor()
     {
         return monTresor;
     }
-    private EntiteStatique[][] grilleEntitesStatiques = new EntiteStatique[SIZE_X][SIZE_Y];
 
     public Jeu() {
         initialisationDesEntites();
@@ -80,50 +80,21 @@ public class Jeu extends Observable implements Runnable {
     private void initialisationDesEntites() {
 
         heros = new Heros(this, 4, 4);
-        heros.getInventaire().setNombreCle(1);
 
         heros.getInventaire().afficheInventaire();
         //appel des fonctions d'initialisation des contenus
+        //initMur();
+        Salle s = new Salle();
+        s.setJeu(this);
+        s.setGrilleEntitesStatiques(this.grilleEntitesStatiques);
+        //s.initMur();
+        for (int i = 0; i < 2;i++) {
+            s.initMurSall(i);
+        }
+        s.applique();
         initPorte();
         initDalles();
         initTresor();
-
-        // murs extérieurs verticaux
-        for (int y = 1; y < 9; y++) {
-            if(this.getEntite(0,y)==null)
-            {
-                addEntiteStatique(new Mur(this), 0, y);
-            }
-
-            if(this.getEntite(19,y)==null) {
-                addEntiteStatique(new Mur(this), 19, y);
-            }
-        }
-
-        // murs extérieurs horizontaux
-        for (int x = 0; x < 20; x++) {
-            if(this.getEntite(x,0)==null)
-            {
-                addEntiteStatique(new Mur(this), x, 0);
-
-            }
-
-            if(this.getEntite(x,9)==null)
-            {
-                addEntiteStatique(new Mur(this), x, 9);
-
-            }
-        }
-
-        for (int x = 0; x < SIZE_X; x++) {
-            for (int y = 0; y < SIZE_Y; y++) {
-                if (grilleEntitesStatiques[x][y] == null) {
-                    grilleEntitesStatiques[x][y] = new CaseNormale(this);
-                }
-            }
-        }
-
-
     }
 
     public void start() {
@@ -167,8 +138,20 @@ public class Jeu extends Observable implements Runnable {
             }
         }
     }
+    private void addEntiteStatiqueToTab(EntiteStatique e, int x, int y)
+    {
+
+    }
+/*
+    public void addEntiteStatiqueP(EntiteStatique e, int x, int y)
+    {
+        addEntiteStatique(EntiteStatique e, int x, int y);
+    }
+
+ */
     public void relancer()
     {
+        aideVu=false;
         System.lineSeparator();
         System.out.println("Initialisation du jeu");
         for (int x = 0; x < SIZE_X; x++) {
@@ -209,12 +192,7 @@ public class Jeu extends Observable implements Runnable {
 
     public void initTresor()
     {
-        //Ajouter eventuelement plusieur tresors a voir ...
-        Aleatoire a =new Aleatoire();
-        //int nombreTresor =a.genereNombreBorne(5);
-
         monTresor =new Tresor();
-        monTresor.setPositionneOK(false);
         monTresor.init(this);
 
     }
@@ -227,7 +205,7 @@ public class Jeu extends Observable implements Runnable {
         for(int i=0;i<mesDalles.getNomBreDalle();i++)
         {
             addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
-            mesDalles.accees(i).affichePosition();
+            //mesDalles.accees(i).affichePosition();
         }
 
     }
@@ -237,6 +215,7 @@ public class Jeu extends Observable implements Runnable {
         Voisinage voinsin =new Voisinage(SIZE_Y);
         if(voinsin.voisinTresorJoueur(monTresor,heros))
         monTresor.recupererContenuTresor(heros);
+        System.out.println("Tresor non detecte");
     }
 
     public void visualiserTresor( ) {
@@ -268,9 +247,70 @@ public class Jeu extends Observable implements Runnable {
         porte1.setPosY(a.genereNombreBorneMinMax(SIZE_Y-1,2));
         porte1.setPosX(0);
         PorteVerouille porte2 =new PorteVerouille(this);
-        porte2.setPosY(a.genereNombreBorneMinMax(SIZE_Y,2));
+        porte2.setPosY(a.genereNombreBorneMinMax(SIZE_Y-1,2));
         porte2.setPosX(SIZE_X-1);
         addEntiteStatique(porte1,porte1.getPosX(),porte1.getPosY());
         addEntiteStatique(porte2,porte2.getPosX(),porte2.getPosY());
+    }
+
+    public void initMur()
+    {
+        // murs extérieurs verticaux
+        for (int y = 1; y < 9; y++) {
+            if(this.getEntite(0,y)==null)
+            {
+                addEntiteStatique(new Mur(this), 0, y);
+            }
+
+            if(this.getEntite(19,y)==null) {
+                addEntiteStatique(new Mur(this), 19, y);
+            }
+        }
+
+        // murs extérieurs horizontaux
+        for (int x = 0; x < 20; x++) {
+            if(this.getEntite(x,0)==null)
+            {
+                addEntiteStatique(new Mur(this), x, 0);
+
+            }
+
+            if(this.getEntite(x,9)==null)
+            {
+                addEntiteStatique(new Mur(this), x, 9);
+
+            }
+        }
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                if (grilleEntitesStatiques[x][y] == null) {
+                    grilleEntitesStatiques[x][y] = new CaseNormale(this);
+                }
+            }
+        }
+    }
+
+    public void commentJouer()
+    {   if(!aideVu)
+        System.out.println("Appuyer sur H pour afficher l'aide");
+    }
+
+    public void help()
+    {
+        System.out.println("Les commandes ");
+        System.lineSeparator();
+        System.out.println("Fleches : dirrige le prof");
+        System.lineSeparator();
+        System.out.println(" I :affiche inventaire");
+        System.lineSeparator();
+        System.out.println(" T :affiche contenu coffre");
+        System.lineSeparator();
+        System.out.println(" C : recupere cle");
+        System.lineSeparator();
+        System.out.println(" O :ouvre porte");
+        System.lineSeparator();
+        System.out.println(" R :pour reprendre");
+        System.lineSeparator();
+        aideVu=true;
     }
 }

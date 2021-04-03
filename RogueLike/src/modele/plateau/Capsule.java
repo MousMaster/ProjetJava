@@ -5,6 +5,24 @@ public class Capsule implements Elem {
     //1 => cle
     //2 => capsule
     private int type_objet;
+    private int nombre;
+    private boolean recupere;
+
+    public boolean isRecupere() {
+        return recupere;
+    }
+
+    public void setRecupere(boolean recupere) {
+        this.recupere = recupere;
+    }
+
+    public int getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(int nombre) {
+        this.nombre = nombre;
+    }
 
     int posX,posY;
     public int getPosX()
