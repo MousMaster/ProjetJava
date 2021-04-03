@@ -96,7 +96,6 @@ public class VueControleur extends JFrame implements Observer {
                     case KeyEvent.VK_C:
                     {
                         jeu.recupererContenuTresor();
-                        tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoCle);
                     }break;
 
 
@@ -224,17 +223,18 @@ public class VueControleur extends JFrame implements Observer {
         {
             tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroS);
         }
-        //affichage du tresor uniquement si contient quelque
-        if(jeu.getTresor()!=null)
-        {
-            if(!jeu.getTresor().isOuvert())
-            {
-                if(jeu.getTresor().isPositionneOK())
-                {
-                    tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
-                }
 
-            }
+
+        //Affichage du tresor change selon son etat si deja visionne affiche son contenu sinon s'affiche comme tresor ferme
+        if(!jeu.getTresor().isOuvert())
+        {
+                tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
+        }
+
+        if(jeu.getTresor().isOuvert())
+        {
+            if(!jeu.getTresor().getIsCleeRecuperee())
+                tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoCle);
         }
     }
 

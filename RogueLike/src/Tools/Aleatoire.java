@@ -33,7 +33,7 @@ public class Aleatoire {
 
     public int genereNombre()
     {
-        int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
+        int random_int = (int)Math.floor(Math.random()*(max-2+1)+2);
         return random_int;
     }
 
@@ -46,6 +46,18 @@ public class Aleatoire {
     public int genereY()
     {
         int y = (int)Math.floor(Math.random()*(Size_y-2+1)+2);
+        return y;
+    }
+
+    public int genereNombreBorne(int leMax)
+    {
+        int y = (int)Math.floor(Math.random()*(leMax-2+1)+2);
+        return y;
+    }
+
+    public int genereNombreBorneMinMax(int leMax,int leMin)
+    {
+        int y = (int)Math.floor(Math.random()*(leMax-leMin)+leMin);
         return y;
     }
 }

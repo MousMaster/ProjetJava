@@ -8,8 +8,6 @@ public class DalleUnique extends CaseNormale {
     int posX,posY;
 
 
-
-
     public int getPosX() {
         return posX;
     }
@@ -61,14 +59,6 @@ public class DalleUnique extends CaseNormale {
             }
             this.fermer();
         }
-    }
-    public void init(int largeur)
-    {
-        Aleatoire a=new Aleatoire(largeur,2);
-        this.posX=a.genereNombre();
-        this.posY=a.genereNombre();
-        //this.posX=;
-        //this.posY=;
     }
 
     public void affichePosition()

@@ -10,6 +10,8 @@ import java.util.List;
 public class Tresor implements Elem{
     int posX,posY;
     private boolean ouvert;
+    private boolean cleRecuperee;
+
     private boolean positionneOK;
 
     public void setPositionneOK(boolean positionneOK) {
@@ -128,6 +130,8 @@ public class Tresor implements Elem{
             {
                 Cle nouVCle =(Cle) contenu.firstElement();
                 System.out.println("Nombre de cle "+nouVCle.getNombreCle());
+                this.ouvert=true;
+
             }else
             {
                 System.out.println("Tresor vide ");
@@ -136,6 +140,8 @@ public class Tresor implements Elem{
         }
 
     public void recupererContenuTresor(Heros heros) {
+
+        if(this.ouvert)
         System.out.println("Recuperation contenu tresor");
         if (!this.vide()) {
             Voisinage voisin = new Voisinage(20);
@@ -144,7 +150,8 @@ public class Tresor implements Elem{
                 System.lineSeparator();
                 System.out.println("Ouverture tresor");
                 if (contenu.firstElement() instanceof Cle) {
-                    this.setOuvert(true);
+                    this.cleRecuperee=true;
+                    this.ouvert=true;
                     Cle nouvCle = new Cle();
                     int n = nouvCle.getNombreCle();
                     System.out.println("Nombre de cle dans tresor " + n);
@@ -156,36 +163,26 @@ public class Tresor implements Elem{
         } else {
             System.out.println("Tresor vide");
         }
+        System.out.println("Regarder le contenu dabord");
 
+    }
+    public boolean getIsCleeRecuperee()
+    {
+        return cleRecuperee;
     }
 
     public void init(Jeu jeu)
     {
         Aleatoire a=new Aleatoire(jeu.getSizeX(),jeu.getSizeY());
         Cle c =new Cle();
-        int x=a.genereX(),y=a.genereY();
-        if(x<10 )
-        {
-            c.setPoX(x);
-        }else {
-            x=a.genereX();
-        }
-        if(y<10)
-        {
-            y=a.genereY();
-        }else
-        {
-            y= a.genereY();
-        }
-
+        c.setRecuperee(false);
+        int x=a.genereNombreBorne(8);
+        int y=a.genereNombreBorne(8);
         c.setNombreCle(x-y);
         this.ouvert=false;
         this.setPoX(x);
         this.setPoY(y);
         this.add(c);
         this.positionneOK=true;
-
     }
-
-
-    }
+}

@@ -4,6 +4,20 @@ public class Cle implements Elem{
     private int type_objet;
     int posX,posY;
 
+    public Cle()
+    {
+        recuperee=false;
+    }
+    private boolean recuperee;
+
+    public boolean isRecuperee() {
+        return recuperee;
+    }
+
+    public void setRecuperee(boolean recuperee) {
+        this.recuperee = recuperee;
+    }
+
     private int nombreCle=4;
 
     public int getNombreCle()

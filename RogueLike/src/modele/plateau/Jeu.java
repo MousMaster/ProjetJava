@@ -82,39 +82,11 @@ public class Jeu extends Observable implements Runnable {
         heros = new Heros(this, 4, 4);
         heros.getInventaire().setNombreCle(1);
 
-
-       // initDalles();
-       // initTresor();
-
-        //OK Pour les Dalles maintenant on attaque l'affichage
-        mesDalles= new MesDalles(this);
-        mesDalles.initialiser();
-
-        for(int i=0;i<mesDalles.getNomBreDalle();i++)
-        {
-            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
-            mesDalles.accees(i).affichePosition();
-        }
-
-        addEntiteStatique(new Porte(this), 6, 6);
-
-        //Ajout des deux portes de la salle
-
-        addEntiteStatique(new PorteVerouille(this), 6, 6);
-        addEntiteStatique(new PorteVerouille(this), 3, 8);
-
-
-        Aleatoire alea=new Aleatoire(1,SIZE_Y);
-        addEntiteStatique(new PorteVerouille(this),0,alea.genereNombre());
-
-        addEntiteStatique(new PorteVerouille(this),SIZE_X-1,alea.genereNombre());
-
-        maDalle = new DalleUnique(this);
-
-        addEntiteStatique(new DalleUnique(this), maDalle.posX, maDalle.posY);
-
-
-
+        heros.getInventaire().afficheInventaire();
+        //appel des fonctions d'initialisation des contenus
+        initPorte();
+        initDalles();
+        initTresor();
 
         // murs extérieurs verticaux
         for (int y = 1; y < 9; y++) {
@@ -150,10 +122,6 @@ public class Jeu extends Observable implements Runnable {
                 }
             }
         }
-
-        //affichage inventaire jours
-        heros.getInventaire().afficheInventaire();
-        afficherCordonneDalle();
 
 
     }
@@ -199,10 +167,6 @@ public class Jeu extends Observable implements Runnable {
             }
         }
     }
-
-    //ajout fontion aleatoire
-
-
     public void relancer()
     {
         System.lineSeparator();
@@ -245,17 +209,26 @@ public class Jeu extends Observable implements Runnable {
 
     public void initTresor()
     {
+        //Ajouter eventuelement plusieur tresors a voir ...
+        Aleatoire a =new Aleatoire();
+        //int nombreTresor =a.genereNombreBorne(5);
+
         monTresor =new Tresor();
         monTresor.setPositionneOK(false);
         monTresor.init(this);
+
     }
 
     public void initDalles()
     {
-        maDalle =new DalleUnique(this);
-        maDalle.init(this.SIZE_Y);
-        addEntiteStatique(maDalle, maDalle.posX, maDalle.posY);
-        maDalle.affichePosition();
+        mesDalles= new MesDalles(this);
+        mesDalles.initialiser();
+
+        for(int i=0;i<mesDalles.getNomBreDalle();i++)
+        {
+            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
+            mesDalles.accees(i).affichePosition();
+        }
 
     }
 
@@ -288,31 +261,16 @@ public class Jeu extends Observable implements Runnable {
         }
     }
 
-    public void afficherCordonneDalle()
+    public void initPorte()
     {
-        for(int i=0;i<SIZE_X;i++)
-        {
-            for(int j=0;j<SIZE_Y;j++)
-            {
-                //if(grilleEntitesStatiques[i][j] instanceof DalleUnique)
-                for(int k=0;i<nombreDalle;k++)
-                {
-                    /*
-                    if((this.mesDalles.accees(i)) instanceof DalleUnique))
-                    {
-                        System.out.println("Coordonne dalleUnique :"+((DalleUnique) grilleEntitesStatiques[i][j]).posX +" "
-                                +((DalleUnique) grilleEntitesStatiques[i][j]).posY);
-                    }
-
-
-                     */
-                }
-            }
-        }
+        Aleatoire a =new Aleatoire();
+        PorteVerouille porte1 =new PorteVerouille(this);
+        porte1.setPosY(a.genereNombreBorneMinMax(SIZE_Y-1,2));
+        porte1.setPosX(0);
+        PorteVerouille porte2 =new PorteVerouille(this);
+        porte2.setPosY(a.genereNombreBorneMinMax(SIZE_Y,2));
+        porte2.setPosX(SIZE_X-1);
+        addEntiteStatique(porte1,porte1.getPosX(),porte1.getPosY());
+        addEntiteStatique(porte2,porte2.getPosX(),porte2.getPosY());
     }
-
-
-
-
-
 }

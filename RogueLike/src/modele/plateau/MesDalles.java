@@ -6,32 +6,37 @@ public class MesDalles {
     private int nomBreDalle;
     private Jeu jeu;
     private DalleUnique tabDalle[];
+    private boolean tabDallesBool[];
 
-   public MesDalles(Jeu jeu)
-   {
-    this.jeu=jeu;
-   }
+    public MesDalles(Jeu jeu) {
+        this.jeu = jeu;
+    }
 
-   public int getNomBreDalle()
-   {
-       return this.nomBreDalle;
-   }
+    public int getNomBreDalle() {
+        return this.nomBreDalle;
+    }
 
-    public DalleUnique accees(int i)
-    {
+    public DalleUnique accees(int i) {
         return this.tabDalle[i];
     }
 
-   public void initialiser()
-   {
-       //Aleatoire a=new Aleatoire(2,10);
-       this.nomBreDalle=5;
-       tabDalle= new DalleUnique[nomBreDalle];
+    public void initialiser() {
+        Aleatoire a=new Aleatoire();
 
-       for(int i=0;i<this.nomBreDalle;i++)
-       {
-            tabDalle[i]=new DalleUnique(jeu,i+2,i+5);
-       }
-   }
+        this.nomBreDalle = a.genereNombreBorneMinMax(20,10);
+        tabDalle = new DalleUnique[nomBreDalle];
+        tabDallesBool =new boolean[nomBreDalle];
 
+        for(int i=0;i<nomBreDalle;i++) {
+            tabDallesBool[i] = false;
+        }
+    //empeche la supperposition des dalles
+        for (int i = 0; i < this.nomBreDalle; i++) {
+            if(!tabDallesBool[i])
+            tabDalle[i] = new DalleUnique(jeu, a.genereNombreBorne(jeu.getSizeX()-5), a.genereNombreBorne(jeu.getSizeY()-6));
+            tabDallesBool[i]=true;
+        }
+    }
 }
+
+
