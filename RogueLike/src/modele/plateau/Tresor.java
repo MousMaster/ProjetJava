@@ -10,7 +10,21 @@ import java.util.List;
 public class Tresor implements Elem{
     int posX,posY;
     private boolean ouvert;
+    private boolean positionneOK;
 
+    public void setPositionneOK(boolean positionneOK) {
+        this.positionneOK = positionneOK;
+    }
+
+    public boolean isPositionneOK() {
+        return positionneOK;
+    }
+
+
+
+    private Jeu jeu;
+
+    public void setJeu(Jeu jeu){this.jeu=jeu;}
     public boolean isOuvert() {
         return ouvert;
     }
@@ -41,6 +55,7 @@ public class Tresor implements Elem{
 
         public Tresor() {
             contenu = new Stack<Elem>();
+            positionneOK=false;
         }
 
 
@@ -121,7 +136,6 @@ public class Tresor implements Elem{
         }
 
     public void recupererContenuTresor(Heros heros) {
-
         System.out.println("Recuperation contenu tresor");
         if (!this.vide()) {
             Voisinage voisin = new Voisinage(20);
@@ -142,6 +156,34 @@ public class Tresor implements Elem{
         } else {
             System.out.println("Tresor vide");
         }
+
+    }
+
+    public void init(Jeu jeu)
+    {
+        Aleatoire a=new Aleatoire(jeu.getSizeX(),jeu.getSizeY());
+        Cle c =new Cle();
+        int x=a.genereX(),y=a.genereY();
+        if(x<10 )
+        {
+            c.setPoX(x);
+        }else {
+            x=a.genereX();
+        }
+        if(y<10)
+        {
+            y=a.genereY();
+        }else
+        {
+            y= a.genereY();
+        }
+
+        c.setNombreCle(x-y);
+        this.ouvert=false;
+        this.setPoX(x);
+        this.setPoY(y);
+        this.add(c);
+        this.positionneOK=true;
 
     }
 

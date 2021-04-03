@@ -76,9 +76,9 @@ public class Heros {
     public void droite() {
         if (traversable(x+1, y)) {
             x ++;
-            /*
+
             this.affichePos();
-             */
+
             this.setOrientationE();
         }
     }
@@ -86,10 +86,10 @@ public class Heros {
     public void gauche() {
         if (traversable(x-1, y)) {
             x --;
-            /*
+
             this.affichePos();
 
-             */
+
             this.setOrientationO();
 
 
@@ -99,9 +99,9 @@ public class Heros {
     public void bas() {
         if (traversable(x, y+1)) {
             y ++;
-            /*
+
             this.affichePos();
-             */
+
             this.setOrientationS();
 
 
@@ -111,9 +111,9 @@ public class Heros {
     public void haut() {
         if (traversable(x, y-1)) {
             y --;
-            /*
+
             this.affichePos();
-             */
+
             this.setOrientationN();
 
 

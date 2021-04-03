@@ -24,12 +24,13 @@ public class MesDalles {
 
    public void initialiser()
    {
-       Aleatoire a=new Aleatoire(2,10);
+       //Aleatoire a=new Aleatoire(2,10);
+       this.nomBreDalle=5;
        tabDalle= new DalleUnique[nomBreDalle];
-       this.nomBreDalle=a.genereNombre();
+
        for(int i=0;i<this.nomBreDalle;i++)
        {
-            tabDalle[i]=new DalleUnique(jeu,a.genereNombre(),a.genereNombre());
+            tabDalle[i]=new DalleUnique(jeu,i+2,i+5);
        }
    }
 

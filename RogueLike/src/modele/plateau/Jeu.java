@@ -17,7 +17,15 @@ public class Jeu extends Observable implements Runnable {
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 10;
 
+    private int pause = 200; // période de rafraichissement
+
+    private Heros heros;
+
+    public int getSizeY(){return this.SIZE_Y;}
+    public int getSizeX(){return this.SIZE_X;}
+
     private MesDalles mesDalles;
+    private Tresor monTresor;
     private int nombreDalle;
 
     private DalleUnique maDalle;
@@ -38,10 +46,6 @@ public class Jeu extends Observable implements Runnable {
         this.nombreDalle = nombreDalle;
     }
 
-    private int pause = 200; // période de rafraichissement
-
-    private Heros heros;
-    private Tresor monTresor;
 
     public Tresor getTresor()
     {
@@ -79,7 +83,18 @@ public class Jeu extends Observable implements Runnable {
         heros.getInventaire().setNombreCle(1);
 
 
+       // initDalles();
+       // initTresor();
 
+        //OK Pour les Dalles maintenant on attaque l'affichage
+        mesDalles= new MesDalles(this);
+        mesDalles.initialiser();
+
+        for(int i=0;i<mesDalles.getNomBreDalle();i++)
+        {
+            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
+            mesDalles.accees(i).affichePosition();
+        }
 
         addEntiteStatique(new Porte(this), 6, 6);
 
@@ -94,10 +109,10 @@ public class Jeu extends Observable implements Runnable {
 
         addEntiteStatique(new PorteVerouille(this),SIZE_X-1,alea.genereNombre());
 
+        maDalle = new DalleUnique(this);
 
+        addEntiteStatique(new DalleUnique(this), maDalle.posX, maDalle.posY);
 
-
-        maDalle =new DalleUnique(this,3,7);
 
 
 
@@ -136,7 +151,6 @@ public class Jeu extends Observable implements Runnable {
             }
         }
 
-        initTresor();
         //affichage inventaire jours
         heros.getInventaire().afficheInventaire();
         afficherCordonneDalle();
@@ -179,8 +193,8 @@ public class Jeu extends Observable implements Runnable {
             } else {
                 if(e instanceof DalleUnique)
                 {
-                    ((DalleUnique) e).setPosX(x);
-                    ((DalleUnique) e).setPosY(y);
+                   ((DalleUnique) e).setPosX(x);
+                   ((DalleUnique) e).setPosY(y);
                 }
             }
         }
@@ -207,39 +221,56 @@ public class Jeu extends Observable implements Runnable {
     public void ouvrePorte() {
         Voisinage voisin =new Voisinage(SIZE_Y);
 
-        for (int x = 0; x < SIZE_X; x++) {
-            for (int y = 0; y < SIZE_Y; y++) {
-                if (grilleEntitesStatiques[x][y] instanceof PorteVerouille) {
-                    if (voisin.voisinJouerPorte(heros, grilleEntitesStatiques[x][y]) && heros.getInventaire().getNombreCle() > 0) {
-                        System.lineSeparator();
-                        System.out.println("Ouverture porte");
-                        heros.getInventaire().decNombreCle();
-                        heros.getInventaire().afficheInventaire();
-                        grilleEntitesStatiques[x][y] = null;
-                        addEntiteStatique(new Porte(this), x, y);
-                    }
-                }
-            }
-        }
+       if(heros.getInventaire().getNombreCle()>0)
+       {
+           for (int x = 0; x < SIZE_X; x++) {
+               for (int y = 0; y < SIZE_Y; y++) {
+                   if (grilleEntitesStatiques[x][y] instanceof PorteVerouille) {
+                       if (voisin.voisinJouerPorte(heros, grilleEntitesStatiques[x][y]) && heros.getInventaire().getNombreCle() > 0) {
+                           System.lineSeparator();
+                           System.out.println("Ouverture porte");
+                           heros.getInventaire().decNombreCle();
+                           heros.getInventaire().afficheInventaire();
+                           grilleEntitesStatiques[x][y] = null;
+                           addEntiteStatique(new Porte(this), x, y);
+                       }
+                   }
+               }
+           }
+       }else
+       {
+           System.out.println("Manque de cle impossible d'ouvrir la porte");
+       }
     }
 
     public void initTresor()
     {
-        monTresor=new Tresor();
-        monTresor.setOuvert(false);
-        monTresor.setPoX(5);
-        monTresor.setPoY(5);
-        Cle c=new Cle();
-        c.setNombreCle(3);
-        monTresor.add(c);
+        monTresor =new Tresor();
+        monTresor.setPositionneOK(false);
+        monTresor.init(this);
     }
 
-    public void visualiserTresor() {
-        if(monTresor!=null)
-        monTresor.Visionner();
+    public void initDalles()
+    {
+        maDalle =new DalleUnique(this);
+        maDalle.init(this.SIZE_Y);
+        addEntiteStatique(maDalle, maDalle.posX, maDalle.posY);
+        maDalle.affichePosition();
+
     }
+
+
     public void recupererContenuTresor() {
+        Voisinage voinsin =new Voisinage(SIZE_Y);
+        if(voinsin.voisinTresorJoueur(monTresor,heros))
         monTresor.recupererContenuTresor(heros);
+    }
+
+    public void visualiserTresor( ) {
+        Voisinage voinsin =new Voisinage(this.getSizeY());
+        if(this!=null)
+            if(voinsin.voisinTresorJoueur(monTresor,heros))
+                monTresor.Visionner();
     }
 
     public void verifieDall()
@@ -263,20 +294,19 @@ public class Jeu extends Observable implements Runnable {
         {
             for(int j=0;j<SIZE_Y;j++)
             {
-                /*
                 //if(grilleEntitesStatiques[i][j] instanceof DalleUnique)
                 for(int k=0;i<nombreDalle;k++)
                 {
+                    /*
                     if((this.mesDalles.accees(i)) instanceof DalleUnique))
                     {
                         System.out.println("Coordonne dalleUnique :"+((DalleUnique) grilleEntitesStatiques[i][j]).posX +" "
                                 +((DalleUnique) grilleEntitesStatiques[i][j]).posY);
                     }
 
+
+                     */
                 }
-
-                 */
-
             }
         }
     }

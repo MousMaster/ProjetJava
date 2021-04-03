@@ -26,6 +26,7 @@ public class PorteVerouille extends EntiteStatique{
         super(_jeu);
         this.posX=posX; this.posY=posY;
     }
+
     @Override
     public boolean traversable() {
         return false;

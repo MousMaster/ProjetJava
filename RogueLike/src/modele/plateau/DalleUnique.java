@@ -1,5 +1,6 @@
 package modele.plateau;
 
+import Tools.Aleatoire;
 import modele.plateau.CaseNormale;
 
 public class DalleUnique extends CaseNormale {
@@ -40,9 +41,10 @@ public class DalleUnique extends CaseNormale {
     public DalleUnique(Jeu _jeu,int px,int py) {
         super(_jeu);
         this.dejaTraveree=false;
-        this.posY=px;
+        this.posX=px;
         this.posY=py;
     }
+
 
     @Override
     public boolean traversable() {
@@ -59,5 +61,18 @@ public class DalleUnique extends CaseNormale {
             }
             this.fermer();
         }
+    }
+    public void init(int largeur)
+    {
+        Aleatoire a=new Aleatoire(largeur,2);
+        this.posX=a.genereNombre();
+        this.posY=a.genereNombre();
+        //this.posX=;
+        //this.posY=;
+    }
+
+    public void affichePosition()
+    {
+        System.out.println("Position dalle :"+this.posX+" , "+this.posY);
     }
 }

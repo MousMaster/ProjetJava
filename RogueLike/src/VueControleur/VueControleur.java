@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+import Tools.Voisinage;
 import modele.plateau.*;
 
 
@@ -42,6 +43,8 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoCle;
 
     private ImageIcon icoDalle;
+    private ImageIcon icoDalleFermee;
+
 
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
@@ -82,7 +85,6 @@ public class VueControleur extends JFrame implements Observer {
                            {
                                if( jeu.getTresor().getTresor() instanceof Cle)
                                {
-
                                    jeu.visualiserTresor();
                                }
                            }
@@ -93,7 +95,6 @@ public class VueControleur extends JFrame implements Observer {
 
                     case KeyEvent.VK_C:
                     {
-                        if(!jeu.getTresor().vide())
                         jeu.recupererContenuTresor();
                         tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoCle);
                     }break;
@@ -110,17 +111,14 @@ public class VueControleur extends JFrame implements Observer {
         icoHeroN = chargerIcone("Images/PacmanN.png");
         icoHeroS = chargerIcone("Images/PacmanS.png");
         icoHeroO = chargerIcone("Images/PacmanO.png");
-
-
         icoCaseNormale = chargerIcone("Images/Vide.png");
         icoMur = chargerIcone("Images/Mur.png");
         icoPorte =chargerIcone("Images/porteOuverte.png");
         icoPorteNonTraverssable =chargerIcone("Images/porteFerme.png");
         icoTresor =chargerIcone("Images/tresor.png");
         icoCle =chargerIcone("Images/clee.png");
-
         icoDalle = chargerIcone("Images/dalleUnique.png");
-
+        icoDalleFermee = chargerIcone("Images/dalleFermee.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -162,6 +160,7 @@ public class VueControleur extends JFrame implements Observer {
      */
     private void mettreAJourAffichage() {
 
+
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
 				EntiteStatique e = jeu.getEntite(x, y);
@@ -187,18 +186,26 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
 
-
-/*
         for(int i=0;i<jeu.getNombreDalle();i++)
         {
-            //if(jeu.getMesDalles().accees(i))
-            //{
-                System.out.println("Non nul");
-                tabJLabel[jeu.getMesDalles().accees(i).getPosX()][jeu.getMesDalles().accees(i).getPosY()].setIcon(icoDalle);
-            //}
+              if(jeu.getMesDalles().accees(i)!=null)
+                {
+                    if(!jeu.getMesDalles().accees(i).isDejaTraveree())
+                    {
+                        tabJLabel[jeu.getMesDalles().accees(i).getPosX()][jeu.getMesDalles().accees(i).getPosY()].setIcon(icoDalle);
+                    }else
+                    {
+                        tabJLabel[jeu.getMesDalles().accees(i).getPosX()][jeu.getMesDalles().accees(i).getPosY()].setIcon(icoDalleFermee);
+                    }
+                }else
+              {
+                  System.out.println("Dalle impossible a afficher");
+              }
         }
 
- */
+
+      //  tabJLabel[jeu.getMaDalle().getPosX()][jeu.getMaDalle().getPosY()].setIcon(icoDalle);
+
         //Affichage du joueur selon son orientation
 
         if(jeu.getHeros().getOrientation()=="Est")
@@ -217,15 +224,18 @@ public class VueControleur extends JFrame implements Observer {
         {
             tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(icoHeroS);
         }
-        if(!jeu.getTresor().isOuvert())
+        //affichage du tresor uniquement si contient quelque
+        if(jeu.getTresor()!=null)
         {
-            tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
+            if(!jeu.getTresor().isOuvert())
+            {
+                if(jeu.getTresor().isPositionneOK())
+                {
+                    tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
+                }
+
+            }
         }
-
-
-        tabJLabel[jeu.getMaDalle().getPosX()][jeu.getMaDalle().getPosY()].setIcon(icoDalle);
-
-
     }
 
     @Override

@@ -2,6 +2,7 @@ package modele.plateau;
 
 public class Inventaire {
     private int compteurCle;
+
     //ajou des setters et getters de de clé + fonction decremente
     public int getNombreCle(){ return compteurCle;}
 
