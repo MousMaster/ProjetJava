@@ -12,4 +12,7 @@ public abstract class EntiteStatique {
 
     public abstract boolean traversable();
 
+
+
+
 }

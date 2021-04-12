@@ -5,7 +5,7 @@ import modele.plateau.CaseNormale;
 
 public class DalleUnique extends CaseNormale {
     boolean dejaTraveree;
-    int posX,posY;
+    private int posX,posY;
 
 
     public int getPosX() {

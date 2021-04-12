@@ -14,10 +14,16 @@ public class Salle {
     int tailleLargeur=5;
     private EntiteStatique[][] grilleEntitesStatiques = new EntiteStatique[SIZE_X][SIZE_Y];
     private Jeu jeu;
+
+    private DalleUnique tabDalle[];
+    private int nomBreDalle;
+    private boolean tabDallesBool[];
+
     public Salle (){
         this.NumSalle = NumSalle ;
          NumSalle++;
     }
+
     
     public int getSize_X(){
         return this.SIZE_X ;
@@ -39,16 +45,11 @@ public class Salle {
 public void initPorte()
     {
         Aleatoire a =new Aleatoire();
-        /*PorteVerouille porte1 =new PorteVerouille(this);
-        porte1.setPosY(a.genereNombreBorneMinMax(Salle.SIZE_Y-1,1));
- 
-        porte1.setPosX(0);*/
-       for(int i=0 ; i<jeu.NBRS ; i++){
+        for(int i=0 ; i<jeu.NBRS ; i++){
         PorteVerouille porte2 =new PorteVerouille(jeu);
         porte2.setPosY(a.genereNombreBorne(6));
-        //porte2.setPosX(SIZE_X-1);
         porte2.setPosX(12+12*i);
-        //addEntiteStatique(porte1,porte1.getPosX(),porte1.getPosY());
+        porte2.setNumPorte(i);
         addEntiteStatique(porte2,porte2.getPosX(),porte2.getPosY());
     }}
 
@@ -87,44 +88,24 @@ public void initPorte()
             }
             }
         }
-    }
- /*   public void initMurSall(int numSall) {
-        // murs extérieurs verticaux
-        for (int y = numSall; y < numSall*tailleLargeur+tailleLargeur+1; y++) {
-            if (this.getEntite(0, y) == null) {
-                addEntiteStatique(new Mur(jeu), 0, y);
-            }
+        Aleatoire a=new Aleatoire();
 
-            if (this.getEntite(tailleLongueur, y) == null) {
-                addEntiteStatique(new Mur(jeu), tailleLongueur, y);
-            }
+        this.nomBreDalle = 5*jeu.NBRS ;
+        tabDalle = new DalleUnique[nomBreDalle];
+        tabDallesBool =new boolean[nomBreDalle];
+
+        for(int i=0;i<nomBreDalle;i++) {
+            tabDallesBool[i] = false;
         }
-
-        // murs extérieurs horizontaux
-        for (int x = numSall; x < numSall+tailleLongueur; x++) {
-            if (this.getEntite(x, 0) == null) {
-                addEntiteStatique(new Mur(jeu), x, 0);
-
-            }
-
-            if (this.getEntite(x, tailleLargeur-1) == null) {
-                addEntiteStatique(new Mur(jeu), x, tailleLargeur-1);
-
-            }
-        }
-    }*/
-    public void applique()
-    {
-        for (int x = 0; x < SIZE_X; x++) {
-            for (int y = 0; y < SIZE_Y; y++) {
-                if (grilleEntitesStatiques[x][y] == null) {
-                    grilleEntitesStatiques[x][y] = new CaseNormale(jeu);
-                }
+        //empeche la supperposition des dalles
+        for( int z = 0 ; z <jeu.NBRS ; z++){
+            for (int i = 0 + z*5 ; i < 5+5*z; i++) {
+                if(!tabDallesBool[i])
+                    tabDalle[i] = new DalleUnique(jeu, a.genereNombreBorne(Salle.SIZE_X-1)+Salle.SIZE_X*z, a.genereNombreBorne(Salle.SIZE_Y-2));
+                tabDallesBool[i]=true;
             }
         }
     }
-
-
 
 
     private void addEntiteStatique(EntiteStatique e, int x, int y) {
@@ -133,10 +114,6 @@ public void initPorte()
         if (e instanceof PorteVerouille) {
             ((PorteVerouille) e).setPosX(x);
             ((PorteVerouille) e).setPosY(y);
-        } else {
-            if (e instanceof Porte) {
-                ((Porte) e).setPosX(x);
-                ((Porte) e).setPosY(y);
             } else {
                 if (e instanceof DalleUnique) {
                     ((DalleUnique) e).setPosX(x);
@@ -144,7 +121,7 @@ public void initPorte()
                 }
             }
         }
-    }
+
 
     public EntiteStatique getEntite(int x, int y) {
         if (x < 0 || x >= SIZE_X || y < 0 || y >= SIZE_Y) {

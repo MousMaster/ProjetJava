@@ -67,7 +67,7 @@ public class VueControleur extends JFrame implements Observer {
             @Override
             public void keyPressed(KeyEvent e) {
                 // jeu.getHeros().affichePos();
-                jeu.commentJouer();
+                //jeu.commentJouer();
                 switch(e.getKeyCode()) {  // on regarde quelle touche a été pressée
                     case KeyEvent.VK_LEFT :
                     {
@@ -84,6 +84,7 @@ public class VueControleur extends JFrame implements Observer {
                     case KeyEvent.VK_O:  jeu.ouvrePorte(); break;
                     case KeyEvent.VK_H : jeu.help(); break;
                     case KeyEvent.VK_W : jeu.etindrerFeu(); break;
+                    //case KeyEvent.VK_S : jeu.soter(); break;
 
                     case KeyEvent.VK_T:
                     {
@@ -183,13 +184,17 @@ public class VueControleur extends JFrame implements Observer {
                 {
                     tabJLabel[x][y].setIcon(icoCaseNormale);
                 }
-                else if (e instanceof Porte)
-                {
-                    tabJLabel[x][y].setIcon(icoPorte);
-                }
                 else if (e instanceof PorteVerouille)
                 {
-                    tabJLabel[x][y].setIcon(icoPorteNonTraverssable);
+                    PorteVerouille p =(PorteVerouille) e;
+                    if(p.traversable())
+                    {
+                        tabJLabel[x][y].setIcon(icoPorte);
+                    }else
+                    {
+                        tabJLabel[x][y].setIcon(icoPorteNonTraverssable);
+                    }
+
                 }
                 else if (e instanceof DalleUnique)
                 {

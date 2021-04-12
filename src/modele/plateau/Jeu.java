@@ -94,6 +94,7 @@ public class Jeu extends Observable implements Runnable {
         heros = new Heros(this, 4, 4);
 
         heros.getInventaire().afficheInventaire();
+        heros.setTabEntite(this.grilleEntitesStatiques);
         initSall();
         initDalles();
         initTresor();
@@ -137,10 +138,6 @@ public class Jeu extends Observable implements Runnable {
             ((PorteVerouille) e).setPosX(x);
             ((PorteVerouille) e).setPosY(y);
         } else {
-            if (e instanceof Porte) {
-                ((Porte) e).setPosX(x);
-                ((Porte) e).setPosY(y);
-            } else {
                 if(e instanceof DalleUnique)
                 {
                     ((DalleUnique) e).setPosX(x);
@@ -148,7 +145,7 @@ public class Jeu extends Observable implements Runnable {
                 }
             }
         }
-    }
+
 
     public void relancer()
     {
@@ -174,16 +171,10 @@ public class Jeu extends Observable implements Runnable {
                     if (grilleEntitesStatiques[x][y] instanceof PorteVerouille) {
                         if (voisin.voisinJouerPorte(heros, grilleEntitesStatiques[x][y]) && heros.getInventaire().getNombreCle() > 0) {
                             PorteVerouille nouv =(PorteVerouille)  grilleEntitesStatiques[x][y];
-                            System.lineSeparator();
+                            nouv.ouvrir();
                             heros.getInventaire().decNombreCle();
                             heros.getInventaire().afficheInventaire();
-                            grilleEntitesStatiques[x][y] = null;
-                            System.out.println("Ouverture porte");
                             heros.getInventaire().setNombreCapsule(0);
-                            System.out.println(" "+nouv.getNumPorte());
-                            addEntiteStatique(new Porte(this), x, y);
-                            if(nouv.getNumPorte()==NBRS-1)
-                                System.out.println("Vous avez reussi bravo !!!!!");
                         }
                     }
                 }
@@ -197,13 +188,6 @@ public class Jeu extends Observable implements Runnable {
 
     public void initTresor()
     {
-        //POur un treso
-        /*
-        monTresor =new Tresor();
-        monTresor.init(this,1);
-
-         */
-
         mesTresors = new MesTresors();
         mesTresors.setJeu(this);
         mesTresors.init();
@@ -211,52 +195,36 @@ public class Jeu extends Observable implements Runnable {
     }
 
     public void recupererContenuTresor() {
-
-        //Un tresor
-        /*
-
-        Voisinage voinsin =new Voisinage(SIZE_X);
-        if(voinsin.voisinTresorJoueur(monTresor,heros))
-            monTresor.recupererContenuTresor(heros);
-        System.out.println("Tresor non detecte");
-
-         */
         mesTresors.recupererContenuTresor();
     }
 
     public void affichTresor()
     {
-        /*
-        Voisinage voinsin =new Voisinage(this.getSizeX());
-        if(this!=null)
-            System.out.println("Test voisin tresor");
-            if(voinsin.voisinTresorJoueur(this.monTresor,this.heros))
-            {
-                monTresor.Visionner();
-            }
-               //
-
-         */
         mesTresors.affichTresor();
     }
 
     public void verifieDall()
     {
-        /*
+
         for(int i=0;i<SIZE_X;i++)
         {
             for(int j=0;j<SIZE_Y;j++)
             {
-                if(grilleEntitesStatiques[i][j] instanceof DalleUnique)
+                if(grilleEntitesStatiques[i][j] instanceof CaseInterdite)
                 {
-                    ((DalleUnique) grilleEntitesStatiques[i][j]).gestionDall(heros);
+                    if(grilleEntitesStatiques[i+1][j]instanceof CaseNormale && heros.getOrientation()=="Est")
+                    {
+                        //heros.soter();
+                    }
+
+
+                   // heros.soter(maCase,this.grilleEntitesStatiques);
                 }
 
             }
         }
-
-         */
         mesDalles.gestionDalles();
+       // heros.soter();
     }
 
     public void etindrerFeu()
@@ -273,12 +241,9 @@ public class Jeu extends Observable implements Runnable {
 
         for(int i=0;i<mesDalles.getNomBreDalle();i++)
         {
-            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
+            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).getPosX(),mesDalles.accees(i).getPosY() );
             addEntiteStatique(interdites.accees(i),interdites.accees(i).posX,interdites.accees(i).posY );
         }
-
-
-
     }
 
     public void commentJouer()
@@ -304,4 +269,6 @@ public class Jeu extends Observable implements Runnable {
         System.lineSeparator();
         aideVu=true;
     }
+
+
 }

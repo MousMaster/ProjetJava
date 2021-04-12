@@ -13,38 +13,39 @@ public class Heros {
     private int y;
 
     int orientation;
+    private EntiteStatique tabEntite[][];
 
-    void setOrientationN()
-    {
-        this.orientation=1;
+    public void setTabEntite(EntiteStatique[][] tabEntite) {
+        this.tabEntite = tabEntite;
     }
-    void setOrientationS()
-    {
-        this.orientation=2;
+
+    void setOrientationN() {
+        this.orientation = 1;
     }
-    void setOrientationE()
-    {
-        this.orientation=3;
+
+    void setOrientationS() {
+        this.orientation = 2;
     }
-    void setOrientationO()
-    {
-        this.orientation=4;
+
+    void setOrientationE() {
+        this.orientation = 3;
+    }
+
+    void setOrientationO() {
+        this.orientation = 4;
     }
 
     public String getOrientation() {
         if (orientation == 1) {
             return "Nord";
-        }else
-        if (orientation == 2) {
+        } else if (orientation == 2) {
             return "Sud";
-        }else
-        if (orientation == 3) {
+        } else if (orientation == 3) {
             return "Est";
-        }else {
+        } else {
             return "Ouest";
         }
     }
-
 
 
     private Jeu jeu;
@@ -59,35 +60,34 @@ public class Heros {
         return y;
     }
 
-    public Inventaire getInventaire(){return inventaire;}
-
-
-
+    public Inventaire getInventaire() {
+        return inventaire;
+    }
 
 
     public Heros(Jeu _jeu, int _x, int _y) {
         jeu = _jeu;
         x = _x;
         y = _y;
-        inventaire=new Inventaire();
-        orientation=3;
+        inventaire = new Inventaire();
+        orientation = 3;
     }
 
     public void droite() {
-        if (traversable(x+1, y)) {
-            x ++;
+        if (traversable(x + 1, y)) {
+            x++;
 
-          //  this.affichePos();
+            //  this.affichePos();
 
             this.setOrientationE();
         }
     }
 
     public void gauche() {
-        if (traversable(x-1, y)) {
-            x --;
+        if (traversable(x - 1, y)) {
+            x--;
 
-          //  this.affichePos();
+            //  this.affichePos();
 
 
             this.setOrientationO();
@@ -97,10 +97,10 @@ public class Heros {
     }
 
     public void bas() {
-        if (traversable(x, y+1)) {
-            y ++;
+        if (traversable(x, y + 1)) {
+            y++;
 
-         //   this.affichePos();
+            //   this.affichePos();
 
             this.setOrientationS();
 
@@ -109,10 +109,10 @@ public class Heros {
     }
 
     public void haut() {
-        if (traversable(x, y-1)) {
-            y --;
+        if (traversable(x, y - 1)) {
+            y--;
 
-         //   this.affichePos();
+            //   this.affichePos();
 
             this.setOrientationN();
 
@@ -122,12 +122,43 @@ public class Heros {
 
     private boolean traversable(int x, int y) {
 
-        if (x >=0 && x <= jeu.SIZE_X && y > 0 && y < jeu.SIZE_Y) {
+        if (x >= 0 && x <= jeu.SIZE_X && y > 0 && y < jeu.SIZE_Y) {
             return jeu.getEntite(x, y).traversable();
         } else {
             return false;
         }
     }
+
+    public void soter()
+    {
+        if(this.getOrientation()=="Est")
+        {
+            this.droite();
+            this.droite();
+
+        }
+
+        if(this.getOrientation()=="Ouest")
+        {
+            this.gauche();
+            this.gauche();
+        }
+
+        if(this.getOrientation()=="Nord")
+        {
+            this.haut();
+            this.haut();
+        }
+
+        if(this.getOrientation()=="Sud")
+        {
+            this.bas();
+            this.bas();
+        }
+    }
+
+
+
 
     public void affichePos()
     {
