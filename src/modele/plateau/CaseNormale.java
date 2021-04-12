@@ -2,7 +2,7 @@ package modele.plateau;
 
 public class CaseNormale extends EntiteStatique {
     public CaseNormale(Jeu _jeu ) { super(_jeu); }
-    int posX,posY;
+ int posX,posY;
 
 
     public int getPosX() {

@@ -2,7 +2,7 @@ package modele.plateau;
 
 public class Inventaire {
     private int compteurCle;
-    private int nombreCapsule;
+    private int nombreCapsule=1;
 
     public int getNombreCapsule() {
         return nombreCapsule;

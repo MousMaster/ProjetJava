@@ -1,5 +1,7 @@
 package Tools;
 
+import java.util.Random;
+
 public class Aleatoire {
     int max;
     int min;
@@ -57,7 +59,9 @@ public class Aleatoire {
 
     public int genereNombreBorneMinMax(int leMax,int leMin)
     {
-        int y = (int)Math.floor(Math.random()*10);
-        return y;
+        Random random = new Random();
+        int nb;
+        nb = leMin+random.nextInt(leMax-leMin);
+        return nb;
     }
 }

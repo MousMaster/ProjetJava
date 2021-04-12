@@ -7,12 +7,9 @@ public class MesTresors {
     private int nombreTresors;
     private int nombreTresorOuvert;
 
-    public void decNombreTresor()
-    {
+    public void decNombreTresor() {
         this.nombreTresorOuvert--;
     }
-
-
 
 
     public Jeu getJeu() {
@@ -70,8 +67,8 @@ public class MesTresors {
                 for (int k = 0; k < this.getNombreTresors(); k++) {
 
                     if (this.accesTresor(k).getPosX() == i && this.accesTresor(k).getPosY() == j) {
-                        if(isVoisin(jeu.getHeros(),i,j) )
-                        this.accesTresor(k).recupererContenuTresor(jeu.getHeros());
+                        if (isVoisin(jeu.getHeros(), i, j))
+                            this.accesTresor(k).recupererContenuTresor(jeu.getHeros());
                     }
                 }
 
@@ -85,7 +82,7 @@ public class MesTresors {
                 for (int k = 0; k < this.getNombreTresors(); k++) {
                     if (this.accesTresor(k).getPosX() == i && this.accesTresor(k).getPosY() == j) {
                         {
-                            if(isVoisin(jeu.getHeros(),i,j)) {
+                            if (isVoisin(jeu.getHeros(), i, j)) {
                                 this.accesTresor(k).Visionner();
                             }
                         }
@@ -96,11 +93,11 @@ public class MesTresors {
         }
     }
 
-    private boolean isVoisin(Heros joueur,int px,int py)
-    {
-        return( (joueur.getX()==px-1 && joueur.getY()==py)
-                || (joueur.getX()==px+1 && joueur.getY()==py)
-                || (joueur.getX()==px && joueur.getY()==py+1)
-                || (joueur.getX()==px && joueur.getY()==py-1));
+    private boolean isVoisin(Heros joueur, int px, int py) {
+        return ((joueur.getX() == px - 1 && joueur.getY() == py)
+                || (joueur.getX() == px + 1 && joueur.getY() == py)
+                || (joueur.getX() == px && joueur.getY() == py + 1)
+                || (joueur.getX() == px && joueur.getY() == py - 1));
     }
+
 }

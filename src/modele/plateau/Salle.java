@@ -45,7 +45,7 @@ public void initPorte()
         porte1.setPosX(0);*/
        for(int i=0 ; i<jeu.NBRS ; i++){
         PorteVerouille porte2 =new PorteVerouille(jeu);
-        porte2.setPosY(a.genereNombreBorne(5));
+        porte2.setPosY(a.genereNombreBorne(6));
         //porte2.setPosX(SIZE_X-1);
         porte2.setPosX(12+12*i);
         //addEntiteStatique(porte1,porte1.getPosX(),porte1.getPosY());
@@ -88,7 +88,31 @@ public void initPorte()
             }
         }
     }
+ /*   public void initMurSall(int numSall) {
+        // murs extérieurs verticaux
+        for (int y = numSall; y < numSall*tailleLargeur+tailleLargeur+1; y++) {
+            if (this.getEntite(0, y) == null) {
+                addEntiteStatique(new Mur(jeu), 0, y);
+            }
 
+            if (this.getEntite(tailleLongueur, y) == null) {
+                addEntiteStatique(new Mur(jeu), tailleLongueur, y);
+            }
+        }
+
+        // murs extérieurs horizontaux
+        for (int x = numSall; x < numSall+tailleLongueur; x++) {
+            if (this.getEntite(x, 0) == null) {
+                addEntiteStatique(new Mur(jeu), x, 0);
+
+            }
+
+            if (this.getEntite(x, tailleLargeur-1) == null) {
+                addEntiteStatique(new Mur(jeu), x, tailleLargeur-1);
+
+            }
+        }
+    }*/
     public void applique()
     {
         for (int x = 0; x < SIZE_X; x++) {

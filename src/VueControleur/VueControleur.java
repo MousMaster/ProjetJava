@@ -41,11 +41,11 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoPorteNonTraverssable;
     private ImageIcon icoTresor;
     private ImageIcon icoTresorOuvert;
+    private ImageIcon icoCle;
 
     private ImageIcon icoDalle;
     private ImageIcon icoDalleFermee;
     private ImageIcon icoCapsule;
-    private ImageIcon icoCaseInterdite;
 
 
 
@@ -83,7 +83,8 @@ public class VueControleur extends JFrame implements Observer {
                     case KeyEvent.VK_I:  jeu.getHeros().getInventaire().afficheInventaire(); break;
                     case KeyEvent.VK_O:  jeu.ouvrePorte(); break;
                     case KeyEvent.VK_H : jeu.help(); break;
-                    case KeyEvent.VK_W : jeu.etindreDall(); break;
+                    case KeyEvent.VK_W : jeu.etindrerFeu(); break;
+
                     case KeyEvent.VK_T:
                     {
                         /*
@@ -123,11 +124,11 @@ public class VueControleur extends JFrame implements Observer {
         icoPorte =chargerIcone("Images/porteOuverte.png");
         icoPorteNonTraverssable =chargerIcone("Images/porteFerme.png");
         icoTresor =chargerIcone("Images/tresor.png");
-        icoTresorOuvert =chargerIcone("Images/tresorOuvert.png");
+        icoCle =chargerIcone("Images/clee.png");
         icoDalle = chargerIcone("Images/dalleUnique.png");
         icoDalleFermee = chargerIcone("Images/dalleFermee.png");
         icoCapsule = chargerIcone("Images/capsule.png");
-        //icoCaseInterdite = chargerIcone("Images/caseinterdite.png");
+        icoTresorOuvert = chargerIcone("Images/tresorOuvert.png");
 
     }
 
@@ -194,10 +195,6 @@ public class VueControleur extends JFrame implements Observer {
                 {
                     tabJLabel[x][y].setIcon(icoDalle);
                 }
-                else if (e instanceof CaseInterdite)
-                {
-                    tabJLabel[x][y].setIcon(icoCaseInterdite);
-                }
             }
         }
 
@@ -241,17 +238,32 @@ public class VueControleur extends JFrame implements Observer {
         }
 
 
-        for(int i=0;i<jeu.getNombreTresor();i++)
+        //Affichage du tresor change selon son etat si deja visionne affiche son contenu sinon s'affiche comme tresor ferme
+/*
+        if(!jeu.getTresor().isOuvert())
         {
-            if(!jeu.accesTreso(i).isOuvert())
-            {
-               tabJLabel[jeu.accesTreso(i).getPosX()][jeu.accesTreso(i).getPosY()].setIcon(icoTresor);
-            }
-            if(jeu.accesTreso(i).isOuvert() && !jeu.accesTreso(i).getIsCleeRecuperee())
-            {
-               tabJLabel[jeu.accesTreso(i).getPosX()][jeu.accesTreso(i).getPosY()].setIcon(icoTresorOuvert);
-            }
+                tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoTresor);
         }
+
+        if(jeu.getTresor().isOuvert())
+        {
+            if(!jeu.getTresor().getIsCleeRecuperee())
+                tabJLabel[jeu.getTresor().getPosX()][jeu.getTresor().getPosY()].setIcon(icoCle);
+        }
+
+*/
+
+            for(int i=0;i<jeu.getNombreTresor();i++)
+            {
+                if(!jeu.accesTreso(i).isOuvert())
+                {
+                    tabJLabel[jeu.accesTreso(i).getPosX()][jeu.accesTreso(i).getPosY()].setIcon(icoTresor);
+                }
+                if(jeu.accesTreso(i).isOuvert() && !jeu.accesTreso(i).getIsCleeRecuperee())
+                {
+                    tabJLabel[jeu.accesTreso(i).getPosX()][jeu.accesTreso(i).getPosY()].setIcon(icoTresorOuvert);
+                }
+            }
 
 
 

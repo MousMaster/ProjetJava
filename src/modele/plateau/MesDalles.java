@@ -70,7 +70,7 @@ public class MesDalles {
             {
                 if(jeu.getGrilleEntitesStatiques()[i][j] instanceof DalleUnique)
                 {
-                    ((DalleUnique) jeu.getGrilleEntitesStatiques()[i][j]).gestionDall(jeu.getHeros());
+                    ((DalleUnique) jeu.getGrilleEntitesStatiques()[i][j]).gestionDallF(jeu.getHeros());
                 }
 
             }

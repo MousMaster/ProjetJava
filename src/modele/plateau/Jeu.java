@@ -5,7 +5,6 @@
  */
 package modele.plateau;
 
-import Tools.Aleatoire;
 import Tools.Voisinage;
 
 import java.util.Observable;
@@ -18,6 +17,7 @@ public class Jeu extends Observable implements Runnable {
 
     private MesTresors mesTresors;
     private MesDalles mesDalles;
+    private MesCasesInterdites interdites;
 
     //
     private Tresor monTresor;
@@ -141,18 +141,15 @@ public class Jeu extends Observable implements Runnable {
                 ((Porte) e).setPosX(x);
                 ((Porte) e).setPosY(y);
             } else {
-                if (e instanceof DalleUnique) {
+                if(e instanceof DalleUnique)
+                {
                     ((DalleUnique) e).setPosX(x);
                     ((DalleUnique) e).setPosY(y);
-                } else {
-                    if (e instanceof CaseInterdite) {
-                        ((CaseInterdite) e).setPosX(x);
-                        ((CaseInterdite) e).setPosY(y);
-                    }
                 }
             }
         }
     }
+
     public void relancer()
     {
         aideVu=false;
@@ -168,7 +165,6 @@ public class Jeu extends Observable implements Runnable {
     }
 
     public void ouvrePorte() {
-
         Voisinage voisin =new Voisinage(SIZE_Y);
 
         if(heros.getInventaire().getNombreCle()>0)
@@ -183,9 +179,9 @@ public class Jeu extends Observable implements Runnable {
                             heros.getInventaire().afficheInventaire();
                             grilleEntitesStatiques[x][y] = null;
                             System.out.println("Ouverture porte");
+                            heros.getInventaire().setNombreCapsule(0);
                             System.out.println(" "+nouv.getNumPorte());
                             addEntiteStatique(new Porte(this), x, y);
-                            heros.getInventaire().setNombreCapsule(0);
                             if(nouv.getNumPorte()==NBRS-1)
                                 System.out.println("Vous avez reussi bravo !!!!!");
                         }
@@ -263,17 +259,25 @@ public class Jeu extends Observable implements Runnable {
         mesDalles.gestionDalles();
     }
 
-    public void etindreDall()
+    public void etindrerFeu()
     {
         mesDalles.gestionDallesF();
     }
     public void initDalles()
     {
+        interdites =new MesCasesInterdites(this);
+        interdites.initialiser();
+
         mesDalles= new MesDalles(this);
         mesDalles.initialiser();
 
-        Aleatoire a = new Aleatoire();
-        int nombreCasevide = a.genereNombreBorneMinMax(5,10);
+        for(int i=0;i<mesDalles.getNomBreDalle();i++)
+        {
+            addEntiteStatique(mesDalles.accees(i),mesDalles.accees(i).posX,mesDalles.accees(i).posY );
+            addEntiteStatique(interdites.accees(i),interdites.accees(i).posX,interdites.accees(i).posY );
+        }
+
+
 
     }
 
