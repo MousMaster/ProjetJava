@@ -1,7 +1,6 @@
 package modele.plateau;
 
 import Tools.Aleatoire;
-import Tools.Voisinage;
 import modele.plateau.CaseNormale;
 
 public class DalleUnique extends CaseNormale {

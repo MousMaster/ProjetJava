@@ -27,7 +27,7 @@ public class MesCasesInterdites {
 
         Aleatoire a=new Aleatoire();
 
-        this.nomBreCase = 5*jeu.NBRS ;
+        this.nomBreCase = 10*jeu.NBRS ;
         tabCase = new CaseInterdite[nomBreCase];
         tabCasesBool =new boolean[nomBreCase];
 
@@ -43,7 +43,10 @@ public class MesCasesInterdites {
             }
         }
     }
-}
 
+    public CaseInterdite accees(int i) {
+        return this.tabCase[i];
+    }
+}
 
 

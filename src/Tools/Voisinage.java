@@ -52,12 +52,4 @@ public class Voisinage {
     {
         return (dalle.getPosX() == jouer.getX() && dalle.getPosY() == jouer.getY());
     }
-  /*
-   public boolean voisinEstDall(DalleUnique d,Heros h)
-   {
-
-      if()
-   }
-
-   */
 }

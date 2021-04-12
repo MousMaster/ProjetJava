@@ -1,7 +1,7 @@
 package modele.plateau;
 
-public class PorteVerouille extends EntiteStatique {
-    private int posX, posY;
+public class PorteVerouille extends EntiteStatique{
+    private int posX,posY;
     private int numPorte;
 
     public int getNumPorte() {
@@ -28,19 +28,16 @@ public class PorteVerouille extends EntiteStatique {
         this.posY = posY;
     }
 
-    public PorteVerouille(Jeu _jeu) {
-        super(_jeu);
-    }
+    public PorteVerouille(Jeu _jeu) { super(_jeu); }
 
-    public PorteVerouille(Jeu _jeu, int posX, int posY) {
+    public PorteVerouille(Jeu _jeu,int posX,int posY)
+    {
         super(_jeu);
-        this.posX = posX;
-        this.posY = posY;
+        this.posX=posX; this.posY=posY;
     }
 
     @Override
     public boolean traversable() {
         return false;
     }
-
 }

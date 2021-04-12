@@ -118,7 +118,16 @@ public class Tresor implements Elem{
         return result;
     }
 
+    public void genererContenue()
+    {
+        Aleatoire alea =new Aleatoire();
 
+        int nombreCle = alea.genereNombreBorne(5);
+        Cle cle =new Cle();
+        cle.setNombreCle(12);
+        contenu.add(cle);
+
+    }
 
     public void Visionner()
     {
@@ -191,13 +200,13 @@ public class Tresor implements Elem{
         Aleatoire a=new Aleatoire();
         Cle c =new Cle();
         c.setRecuperee(false);
-        c.setNombreCle(a.genereNombreBorneMinMax(2,1));
+        c.setNombreCle(a.genereNombreBorneMinMax(3,1));
 
 
 
         Capsule cap =new Capsule();
         cap.setRecupere(false);
-        cap.setNombre(a.genereNombreBorneMinMax(6,3));
+        cap.setNombre(a.genereNombreBorneMinMax(3,1));
 
 
         int x=a.genereNombreBorneMinMax(Salle.SIZE_X+Salle.SIZE_X*numSall-1,Salle.SIZE_X+Salle.SIZE_X*(numSall-1)+1);
@@ -207,13 +216,13 @@ public class Tresor implements Elem{
         this.add(cap);
 
         this.ouvert=false;
-
         this.setPoX(x);
         this.setPoY(y);
 
         this.positionneOK=true;
 
     }
+
 
     private int abs(int i) {
         if(i<0)
